@@ -3,4 +3,4 @@
 
 # Credits
 - Tmux and Vim configuration created by [Dalton Serey -
-  UFCG](github.com/daltonserey)
+  UFCG](https://github.com/daltonserey)
