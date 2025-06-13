@@ -1,0 +1,6 @@
+# Configuração TMUX Dalton Serey
+# Variação para p1
+
+# statusbar
+set-window-option -g window-status-current-format ' #I#[fg=colour249]:#[fg=#00ff00]#W#[fg=#ff0000] '
+#set-window-option -g window-status-current-format ' #I#[fg=colour249]:#[fg=colour255]#W#[fg=colour249]#F '

@@ -1,0 +1,365 @@
+" Vim Configuration File
+" Dalton Serey, UFCG
+
+" Highlight all instances of word under cursor, when idle.
+" Useful when studying strange source code.
+" Type <leader>/ to toggle highlighting on/off.
+let @c = 'Oimport code; code.interact(local=locals())'
+let @i = 'Oimport pdb; pdb.set_trace()'
+let @o = 'Oimport pudb; pu.db'
+let @p = 'Ofrom remote_pdb import RemotePdb; RemotePdb("127.0.0.1", 4444).set_trace()jkddkP'
+
+" clipboar support
+set clipboard=unnamedplus
+
+" split similar aos keymaps do tmux
+"nmap <c-w>= <c-w>v
+"nmap <c-w>- <c-w>s
+nmap <c-w>= :vnew<cr>
+nmap <c-w>- :new<cr>
+command Bd bp\|bd \#
+
+" para fazer backspace funcionar melhor
+set backspace=indent,eol,start
+
+" para desabilitar uso de alternate screen
+"set t_ti= t_te=
+"set ttymouse=xterm2
+set mouse=a
+
+augroup numbertoggle
+  autocmd!
+  "autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
+" configuração geral
+syntax on
+let mapleader = '='
+set expandtab
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set number
+set nowrap
+
+" Caracteres especiais areviados
+" Usar Eatchar como abaixo, caso se deseje eliminar
+" o espaço adicionado na expansão. Caso não se queira
+" a expansão, ainda pode ser usado o <C-]>
+":iabbr <silent> :dsg: dalton<c-r>=Eatchar('\s')<cr>
+abbreviate :<": “
+abbreviate :">: ”
+abbreviate :->: →
+abbreviate :<-: ←
+abbreviate :=>: ⇒
+abbreviate :<=: ⇐
+abbreviate :<->: ↔
+abbreviate :<=>: ⇔
+abbreviate :v: ✅
+abbreviate :check: ✅
+abbreviate :x: ×
+abbreviate :X: ❌
+abbreviate :sad: 😞
+abbreviate :clap: 👏
+abbreviate :think: 🤔
+abbreviate :!=: ≠
+abbreviate :ellipsis: …
+abbreviate :...: …
+abbreviate :---: —
+abbreviate :dash: —
+abbreviate :times: × 
+abbreviate :<=: ≤
+abbreviate :>=: ≥
+
+
+" Configuração formata parágrafo
+nnoremap <leader>p m9gqap`9
+nnoremap <leader>p m9gqap`9
+:inoremap <leader><leader>p :pdb:
+ 
+" Configuração do search
+set hlsearch
+hi Search ctermbg=226 ctermfg=black
+nnoremap <leader>s :set hlsearch!<cr>
+
+" Pra mover linhas
+nnoremap <C-S-Up> :m .-2<CR>==
+nnoremap <C-S-Down> :m .+1<CR>==
+
+" Aspas duplas em uma palavra
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+
+" =======
+" Folding
+" =======
+"nnoremap <space> za
+"hi Folded ctermbg=234 ctermfg=darkgray
+
+" Para incluir linhas comentadas em folds
+"set foldignore=
+set foldenable!
+set foldmethod=expr
+set foldnestmax=1
+set foldexpr=GetPotionFold(v:lnum)
+"set foldexpr=empty(getline(v:lnum))?'=':indent(v:lnum)
+
+" ============================================
+" Movimentação de tela sem mover cursor
+" ============================================
+nnoremap <C-Up> <C-e><Down>
+nnoremap <C-Down> <C-y><Up>
+
+" Mantém 5 linhas distante de início e fim durante scroll
+set scrolloff=5
+
+" ============================================
+" Configurações de Largura do Texto e Wrapping
+" ============================================
+
+" Largura do texto
+set textwidth=65
+nnoremap <leader>tw :let &textwidth = (&textwidth ? 0 : deftextwidth)<cr>
+
+" Para visualizar coluna no limite da largura do texto
+"set colorcolumn=+1 
+"hi ColorColumn NONE ctermbg=Gray
+
+" Para destacar todo texto além da coluna limite de textwidth
+"highlight OverLength ctermbg=darkgrey guibg=#592929 ctermfg=226
+"match OverLength /\%80v.*/
+
+" Indentação
+set autoindent
+nnoremap <leader>ai :set autoindent!<cr>
+noremap <leader><Tab> :set autoindent!<Enter>
+inoremap <leader><Tab> jk:set autoindent!<Enter>i
+
+" Numeração de linhas
+noremap <leader>m :set number!<Enter>
+
+" Não quebrar palavras ao fazer wrapping (soft breaks)
+set nolist wrap linebreak
+noremap <leader>w :set wrap!<Enter> <bar> :set linebreak<Enter> <bar> :set textwidth=0<Enter>
+set breakindent
+set showbreak=⮩
+set breakindentopt=shift:2,min:40,sbr
+"set breakat=<Space>
+
+" Listagem de caracteres ocultos
+set listchars=eol:$,tab:>-,trail:~,extends:>,precedes:<
+set nolist
+nnoremap <leader>l :set list!<cr>
+
+" Para que setas funcionem em insert mode com soft wrap
+nnoremap <Down> gj
+nnoremap <Up> gk
+
+" Não trocar linhas longas que nao cabem na tela por '@'
+set display+=lastline
+
+" Para usar setas no modo insert com xterm256 no Mac
+imap OA <Up>
+imap OB <Down>
+imap OC <Right>
+imap OD <Left>
+
+
+" ============================================
+" Múltiplos Buffers
+" ============================================
+
+" para mudar entre buffers sem gravar
+set hidden
+
+" configura tabline e statusline 
+set showtabline=2
+
+" sem statusline = 1, com = 2
+set laststatus=2
+
+" configura statusline
+set statusline=%F       " Path to the file
+set statusline+=\       " Separator
+set statusline+=%y      " Filetype of the file
+set statusline+=\ %l    " Current line
+set statusline+=/       " Separator
+set statusline+=%L      " Total lines
+set statusline+=\ %c    " Current column
+
+" hi TabLineFill term=bold cterm=bold ctermbg=black ctermfg=yellow
+" hi TabLineSel ctermfg=gray ctermbg=darkblue
+
+hi TabLineSel   cterm=bold,reverse  ctermbg=255         ctermfg=DarkBlue 
+hi TabLine      cterm=reverse       ctermbg=255         ctermfg=DarkBlue
+hi TabLineFill  cterm=reverse       ctermbg=None        ctermfg=DarkBlue 
+hi StatusLine   cterm=bold,reverse  ctermbg=255         ctermfg=DarkBlue
+
+
+" ============================================
+" Outros maps e abbrevs
+" ============================================
+
+" executa comando com Q
+noremap Q !!sh<CR>
+
+" troca ESC por j,k em modo de inserção
+inoremap jk <esc>
+"inoremap <esc> <nop>
+
+" Para editar e ler rapidamente este arquivo 
+nnoremap <leader>[ :e $MYVIMRC<cr>
+nnoremap <leader>] :source $MYVIMRC<cr>
+
+" Usar Tab e Shift-Tab para alternar entre buffers abertos
+noremap <Tab> :bn<Enter>
+noremap <S-Tab> :bp<Enter>
+
+" =====================
+" Configurações Visuais
+" =====================
+
+" Cores do texto e fundo principais
+highlight Normal ctermfg=white ctermbg=233
+
+" Cores da numeração de linhas
+highlight LineNr ctermfg=237 ctermbg=234
+
+" Mudar cursor para barra vertical fina"
+"let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+"let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+
+" Matching de parênteses automático"
+"inoremap ( ()<Esc>i
+"inoremap [ []<Esc>i
+"inoremap { {}<Esc>i
+"inoremap ' ''<Esc>i
+
+" Para colorir adequadamente o matching parênteses"
+hi MatchParen cterm=bold ctermbg=none ctermfg=226
+
+" Angular
+iabbrev ngc\ <div ng-controller=""><Enter><Enter></div>
+
+" Função de apoio para abbrevs (ver :helpgrep Eatchar)
+function! Eatchar(pat) 
+    let c = nr2char(getchar()) 
+    return (c =~ a:pat) ? '' : c 
+endfunction
+
+" ============================================
+" Format paragraphs for text writing
+" ============================================
+" setlocal formatoptions=awtq
+
+
+" Não quebra linhas que são longas ao editá-las
+setlocal formatoptions+=l
+
+
+" ============================================
+" Autocommands
+" ============================================
+:au BufNewFile *.R r ~/.vim/skeleton.R
+augroup md
+    " reinicia formatoptions ao valor default
+    setlocal formatoptions=tcq
+   
+    " Permite formatar parágrafos automaticamente
+"    setlocal formatoptions+=a
+
+    " Permite formatar listas numeradas
+    " (não usar com option '2'; pressupõe uso de autoindent)
+    setlocal formatoptions+=n
+augroup end
+
+augroup clj
+    autocmd BufNewFile,BufRead *.clj setlocal nowrap
+    autocmd BufNewFile,BufRead *.clj set textwidth=0
+    autocmd BufNewFile,BufRead *.clj highlight clear OverLength
+    autocmd BufNewFile,BufRead *.clj set tabstop=2
+    autocmd BufNewFile,BufRead *.clj set softtabstop=2
+    autocmd BufNewFile,BufRead *.clj set shiftwidth=2
+augroup end
+
+
+augroup html
+    autocmd BufNewFile,BufRead *.html setlocal nowrap
+    autocmd BufNewFile,BufRead *.html set textwidth=0
+    autocmd BufNewFile,BufRead *.html highlight clear OverLength
+    "autocmd FileType html,css EmmetInstall
+    autocmd BufNewFile,BufRead *.html set tabstop=2
+    autocmd BufNewFile,BufRead *.html set softtabstop=2
+    autocmd BufNewFile,BufRead *.html set shiftwidth=2
+"    autocmd BufNewFile,BufRead *.html inoreabbrev div <div></div><Esc>5hi<C-R>=Eatchar('\s')<CR>
+"    autocmd BufNewFile,BufRead *.html inoreabbrev html <html></html><Esc>6hi<cr><cr>k<C-R>=Eatchar('\s')<CR>
+"    autocmd BufNewFile,BufRead *.html inoreabbrev head <head></head><Esc>6hi<C-R>=Eatchar('\s')<CR>
+"    autocmd BufNewFile,BufRead *.html inoreabbrev body <body></body><Esc>6hi<C-R>=Eatchar('\s')<CR>
+"    autocmd BufNewFile,BufRead *.html inoreabbrev p <p></p><Esc>6hi<C-R>=Eatchar('\s')<CR>
+augroup end
+
+augroup js
+    autocmd BufNewFile,BufRead *.js setlocal nowrap
+    autocmd BufNewFile,BufRead *.js set textwidth=0
+    autocmd BufNewFile,BufRead *.js highlight clear OverLength
+    autocmd BufNewFile,BufRead *.js set tabstop=4
+    autocmd BufNewFile,BufRead *.js set softtabstop=4
+    autocmd BufNewFile,BufRead *.js set shiftwidth=4
+augroup end
+
+" python
+augroup py
+    autocmd BufNewFile,BufRead *.py :highlight Comment ctermfg=Green
+    autocmd BufNewFile,BufRead *.py setlocal nowrap
+    autocmd BufNewFile,BufRead *.py set textwidth=0
+    "autocmd BufNewFile,BufRead *.py highlight clear OverLength
+    "autocmd BufNewFile,BufRead *.py match OverLength /\%120v.*/
+    autocmd BufNewFile,BufRead *.py set tabstop=4
+    autocmd BufNewFile,BufRead *.py set softtabstop=4
+    autocmd BufNewFile,BufRead *.py set shiftwidth=4
+    autocmd BufNewFile,BufRead *.py set wrap
+    autocmd BufNewFile,BufRead *.py set linebreak
+    autocmd BufNewFile,BufRead *.py set textwidth=0
+    autocmd BufNewFile,BufRead *.py set breakindentopt=shift:6,min:40,sbr
+augroup end
+
+" Sourcing
+source ~/.vim/yaml.vim
+source ~/.vim/folding.vim
+
+" =====
+" Emmet
+" =====
+"let g:user_emmet_settings = {
+"\  'indentation' : '  ',
+"\  'perl' : {
+"\    'aliases' : {
+"\      'req' : 'require '
+"\    },
+"\    'snippets' : {
+"\      'use' : "use strict\nuse warnings\n\n",
+"\      'warn' : "warn \"|\";",
+"\    }
+"\  }
+"\}
+
+" only enable normal mode functions.
+"let g:user_emmet_mode='n'
+
+" enable for html only
+"let g:user_emmet_install_global = 0
+"autocmd FileType html,css EmmetInstall
+
+" redefine trigger key
+"let g:user_emmet_leader_key='<C-Z>'
+
+"let g:user_emmet_expandabbr_key = '<c-e>'
+"let g:use_emmet_complete_tag = 1
+"let g:user_emmet_leader_key='<C-M>'
+"let g:user_emmet_expandabbr_key = '<Tab><Tab>'
+
+" comparators
+syntax match pyOperator "<=" conceal cchar=M
+
+"colorscheme default
+"colorscheme dalton
